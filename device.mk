@@ -14,6 +14,11 @@
 # limitations under the License.
 #
 
+LOCAL_PATH := $(call my-dir)
+
+# System properties
+-include $(LOCAL_PATH)/system_prop.mk
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Get non-open-source specific aspects
