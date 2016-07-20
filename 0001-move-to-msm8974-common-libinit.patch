@@ -1,0 +1,71 @@
+From 5b890a8a41b0673c499f8ae1a21e4e35ae74421e Mon Sep 17 00:00:00 2001
+From: GaHoKwan <kwangaho@gmail.com>
+Date: Tue, 12 Jul 2016 09:03:39 -0600
+Subject: [PATCH] k3gduosctc: move to msm8974-common libinit
+
+Change-Id: Ic06b33120dbb48a1979e17c1c31c8592a68f4773
+---
+ BoardConfig.mk     |  4 ++--
+ init/init_klte.cpp | 11 +++++------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/BoardConfig.mk b/BoardConfig.mk
+index 3129675..f514c78 100644
+--- a/BoardConfig.mk
++++ b/BoardConfig.mk
+@@ -24,8 +24,8 @@ TARGET_OTA_ASSERT_DEVICE := k3gduos,k3gduosctc,k3g,k3gctc,klte
+ TARGET_KERNEL_VARIANT_CONFIG := msm8974pro_sec_k3gduos_ctc_defconfig
+ 
+ # Init
+-TARGET_INIT_VENDOR_LIB := libinit_msm
+-TARGET_LIBINIT_DEFINES_FILE := device/samsung/k3gduosctc/init/init_klte.cpp
++TARGET_INIT_VENDOR_LIB := libinit_msm8974
++TARGET_LIBINIT_MSM8974_DEFINES_FILE := device/samsung/k3gduosctc/init/init_klte.cpp
+ TARGET_UNIFIED_DEVICE := true
+ 
+ # NFC
+diff --git a/init/init_klte.cpp b/init/init_klte.cpp
+index d59f491..8553032 100755
+--- a/init/init_klte.cpp
++++ b/init/init_klte.cpp
+@@ -30,13 +30,16 @@
+  */
+ 
+ #include <stdlib.h>
++#include <stdio.h>
+ 
+ #include "vendor_init.h"
+ #include "property_service.h"
+ #include "log.h"
+ #include "util.h"
+ 
+-#include "init_msm.h"
++#include "init_msm8974.h"
++
++#define ISMATCH(a, b) (!strncmp((a), (b), PROP_VALUE_MAX))
+ 
+ void cdma_properties(char const *default_cdma_sub,
+         char const *operator_numeric, char const *operator_alpha)
+@@ -49,7 +52,7 @@ void cdma_properties(char const *default_cdma_sub,
+     property_set("ro.telephony.ril.config", "newDriverCallU,newDialCode");
+ }
+ 
+-void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *board_type)
++void init_target_properties()
+ {
+     char platform[PROP_VALUE_MAX];
+     char bootloader[PROP_VALUE_MAX];
+@@ -57,10 +60,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
+     char devicename[PROP_VALUE_MAX];
+     int rc;
+ 
+-    UNUSED(msm_id);
+-    UNUSED(msm_ver);
+-    UNUSED(board_type);
+-
+     rc = property_get("ro.board.platform", platform);
+     if (!rc || !ISMATCH(platform, ANDROID_TARGET))
+         return;
+-- 
+1.9.1
+
