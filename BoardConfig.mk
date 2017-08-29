@@ -19,7 +19,7 @@
 TARGET_OTA_ASSERT_DEVICE := kltespr,klte
 
 # Kernel
-TARGET_KERNEL_CONFIG := lineage_klte_bcm2079x_defconfig
+TARGET_KERNEL_CONFIG := mokee_klte_bcm2079x_defconfig
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_msm8974
